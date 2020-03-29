@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,11 @@ public class GiroProcessRestController {
     @Autowired
     private TaskService taskService;
     
-  /*  @Autowired
-    private ApplicantRepository applicantRepository;*/
-
     @ResponseStatus(value = HttpStatus.OK)
     @RequestMapping(value = "/giro-process", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String startGiroProcess() {
 
-       /* Applicant applicant = new Applicant(data.get("name"), data.get("email"), data.get("phoneNumber"));
-        applicantRepository.save(applicant);*/
-
-       // Map<String, Object> vars = Collections.<String, Object>singletonMap("applicant", applicant);
         runtimeService.startProcessInstanceByKey("Giro");
         
         /*return "Process started. Number of currently running"
@@ -54,7 +48,6 @@ public class GiroProcessRestController {
         return pi.getId();
     }
     
-    //@GetMapping("/get-tasks/{processInstanceId}")
     @RequestMapping(value = "/get-tasks/{processInstanceId}", method = RequestMethod.GET)
     public List<TaskRepresentation> getTasks(@PathVariable String processInstanceId) {
         List<Task> usertasks = taskService.createTaskQuery()
@@ -66,7 +59,6 @@ public class GiroProcessRestController {
           .collect(Collectors.toList());
     }
 
-   // @GetMapping("/complete-task-A/{processInstanceId}")
     @RequestMapping(value = "/complete-task-A/{processInstanceId}", method = RequestMethod.GET)
     public void completeTaskA(@PathVariable String processInstanceId) {
         Task task = taskService.createTaskQuery()
@@ -78,19 +70,33 @@ public class GiroProcessRestController {
     
     @RequestMapping(value = "/next-task/{processInstanceId}", method = RequestMethod.GET)
     public  List<Task> getNextTask(@PathVariable String processInstanceId) {
-    	
-    	/*Task task = taskService.createTaskQuery()
-                .processInstanceId(processInstanceId)
-                .taskCandidateGroup("Legaldata")
-                .singleResult();*/
-    	
-    	 List<Task> tasks = taskService.createTaskQuery()
+    	 /*List<Task> tasks = taskService.createTaskQuery()
                  .processInstanceId(processInstanceId)
                  .orderByTaskName().asc()
-                 .list();
-       // taskService.complete(task.getId());
-       // System.out.println("Task completed");
-    	return tasks;
+                 .list();*/
+    	
+    	List<Execution> executionList = runtimeService
+        .createExecutionQuery()
+        .processInstanceId(processInstanceId)
+        .list();
+    	
+    	System.out.println(executionList);
+    	
+    	runtimeService.signal(processInstanceId);
+    	
+    	List<String> StringList = runtimeService.getActiveActivityIds(processInstanceId);
+    	
+    	System.out.println(StringList);
+    	
+    	final Execution forkA = runtimeService
+    	        .createExecutionQuery()
+    	        .activityId("Task_3")
+    	        .processInstanceId(processInstanceId)
+    	        .singleResult();
+    	 System.out.println("Found forked execution {} in Task A activity for process {}"+ forkA +processInstanceId);
+
+    	runtimeService.signal(forkA.getId());
+    	return null;
     }
 
 }

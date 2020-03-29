@@ -1,3 +1,5 @@
+in Postman we need to add Authorisation, basic auth, username-admin, password-admin
+
 curl -X POST \
   http://localhost:8080/start-hire-process \
   -H 'authorization: Basic YWRtaW46YWRtaW4=' \
@@ -48,3 +50,10 @@ curl -X POST \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -H 'postman-token: c9ab4b75-5038-b579-6236-413a44960cda'
+  
+  curl -X GET \
+  http://localhost:8080/next-task/19 \
+  -H 'authorization: Basic YWRtaW46YWRtaW4=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: f9af4062-f6d2-8b2c-58a2-04d2ea0bfcc7'
