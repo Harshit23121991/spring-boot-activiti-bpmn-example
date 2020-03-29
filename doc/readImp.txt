@@ -1,0 +1,50 @@
+curl -X POST \
+  http://localhost:8080/start-hire-process \
+  -H 'authorization: Basic YWRtaW46YWRtaW4=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 5577ce34-8aa1-acde-8898-7a54474df403' \
+  -d '{"name":"John Doe", "email": "john.doe@alfresco.com", "phoneNumber":"123456789"}'
+  
+  
+  curl -X GET \
+  http://localhost:8080/giro-process \
+  -H 'authorization: Basic YWRtaW46YWRtaW4=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 7157b3cc-531f-fa46-3e07-0b0e245dc994'
+  
+  curl -X GET \
+  http://localhost:8080/activiti \
+  -H 'authorization: Basic YWRtaW46YWRtaW4=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 1bfa692f-a0ec-baa8-91cd-abaa49a4f1da'
+  
+  curl -X GET \
+  http://localhost:8080/runtime/tasks \
+  -H 'authorization: Basic YWRtaW46YWRtaW4=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 02b3a49d-9e77-702d-07b1-10d8ce2df080'
+  
+  curl -X POST \
+  http://localhost:8080/runtime/tasks/14 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: eaea6fb7-d6c9-2c47-054f-390cd614513e' \
+  -d '{"action" : "complete", "variables": [ {"name":"New Customer", "value":true} ]}'
+  
+  curl -X GET \
+  http://localhost:8080/get-tasks/9 \
+  -H 'authorization: Basic YWRtaW46YWRtaW4=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 52b4e0ec-caee-72e0-d5fa-a91e2b29e2f1'
+  
+  curl -X GET \
+  http://localhost:8080/complete-task-A/5 \
+  -H 'authorization: Basic YWRtaW46YWRtaW4=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: c9ab4b75-5038-b579-6236-413a44960cda'
